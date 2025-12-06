@@ -1,2 +1,2 @@
-# clothes
-buy clothes
+# Fashion
+buy all
