@@ -287,10 +287,10 @@
 
     <script>
         const apps = [
-            { id: 1, name: "myntra", icon: "https://cdn.iconscout.com/icon/free/png-256/free-myntra-icon-svg-download-png-2249158.png", link: "https://www.myntra.com/", pinned: false },
-            { id: 2, name: "snitch", icon: "https://cdn.brandfetch.io/idBQ-DS7E5/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1758940486535", link: "https://www.snitch.com/", pinned: false },
-            { id: 3, name: "shein", icon: "https://i.pinimg.com/564x/10/a0/4a/10a04a48aa29fba6aa3186541a524d1b.jpg", link: "https://www.sheinindia.in/", pinned: false },
-            { id: 4, name: "powerlook", icon: "https://images.yourstory.com/cs/images/companies/Powerlook1-1650868940555.jpg?fm=auto&ar=1%3A1&mode=fill&fill=solid&fill-color=fff&format=auto&w=1920&q=75", link: "https://powerlook.in/", pinned: false },
+                { id: 1, name: "myntra", icon: "https://cdn.iconscout.com/icon/free/png-256/free-myntra-icon-svg-download-png-2249158.png", link: "https://www.myntra.com/", pinned: false },
+                { id: 2, name: "snitch", icon: "https://cdn.brandfetch.io/idBQ-DS7E5/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1758940486535", link: "https://www.snitch.com/", pinned: false },
+                { id: 3, name: "shein", icon: "https://i.pinimg.com/564x/10/a0/4a/10a04a48aa29fba6aa3186541a524d1b.jpg", link: "https://www.sheinindia.in/", pinned: false },
+                { id: 4, name: "powerlook", icon: "https://images.yourstory.com/cs/images/companies/Powerlook1-1650868940555.jpg?fm=auto&ar=1%3A1&mode=fill&fill=solid&fill-color=fff&format=auto&w=1920&q=75", link: "https://powerlook.in/", pinned: false },
                 { id: 5, name: "bewakoof", icon: "https://miro.medium.com/v2/resize:fit:1024/0*wyavn0wQjeLdEVe8.png", link: "https://www.bewakoof.com/", pinned: false },
                 { id: 6, name: "campus sutra", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvkZAU5kR_KxfO6JUFCQ_s7S4MS1_yopP5Pg&s", link: "https://campussutra.com/", pinned: false },
                 { id: 7, name: "ajio", icon: "https://i.pinimg.com/474x/df/6b/f1/df6bf1e56460cc26f20b99f85af896ae.jpg", link: "https://www.ajio.com/", pinned: false },
@@ -338,31 +338,6 @@
                 { id: 49, name: "thefootballfrenzy", icon: "https://www.thefootballfrenzy.com/cdn/shop/files/WhatsApp_Image_2021-02-23_at_8.33.11_PM_05fa2ed7-9847-4bfc-8e06-db8f27deb947_1200x1200.jpg?v=1616164321", link: "https://www.thefootballfrenzy.com/", pinned: false },
         ];
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        const playTone = (freq, type, duration) => {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + duration);
-        };
-
-        const playHoverSound = () => {
-            if (audioCtx.state === 'running') playTone(400, 'sine', 0.1);
-        };
-        const playClickSound = () => {
-             if (audioCtx.state === 'running') {
-                playTone(600, 'square', 0.1);
-                setTimeout(() => playTone(1200, 'sine', 0.3), 50);
-             }
-        };
-
         const grid = document.getElementById('appGrid');
         
         function renderApps(filterText = '') {
@@ -390,7 +365,6 @@
                 `;
 
                 card.addEventListener('mouseenter', () => {
-                    playHoverSound();
                     card.style.zIndex = 10;
                 });
                 
@@ -411,16 +385,14 @@
 
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -18; // Increased rotation
+                    const rotateX = ((y - centerY) / centerY) * -18; 
                     const rotateY = ((x - centerX) / centerX) * 18;
 
-                    // Increased scale on hover movement
                     container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.15)`;
                 });
 
                 card.addEventListener('click', (e) => {
                     e.preventDefault();
-                    playClickSound();
                     card.classList.add('launching');
                     document.getElementById('warpOverlay').classList.add('active');
 
@@ -556,12 +528,6 @@
         initParticles();
         animate();
         renderApps();
-        
-        document.body.addEventListener('click', () => {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }, { once: true });
-
     </script>
 </body>
 </html>
-
